@@ -185,6 +185,13 @@ const produits = [
         disponibilite: "Disponible en magasin"
     },
     {
+    nom: "Veste Orsa Marine/Orange",
+    reference: "4156969",
+    marque: "Delta Plus",
+    categorie: "EPI",
+    disponibilite: "Disponible en magasin"
+},
+    {
         nom: "Gants de protection",
         reference: "EPI-002",
         categorie: "EPI",
@@ -251,7 +258,8 @@ function afficherProduits() {
                     </div>
 
                     <div class="reference">
-                        Référence : ${produit.reference}
+                         Référence : ${produit.reference}<br>
+    Marque : ${produit.marque || "Non renseignée"}
                     </div>
 
                     <span class="status ${classe}">
