@@ -186,11 +186,12 @@ const produits = [
         disponibilite: "Disponible en magasin"
     },
     {
-        nom: "Veste Orsa Marine/Orange",
-        reference: "4156969",
-        marque: "Delta Plus",
-        categorie: "EPI",
-        disponibilite: "Disponible en magasin"
+       nom: "Veste Orsa Marine/Orange",
+    reference: "4156969",
+    marque: "Delta Plus",
+    categorie: "EPI",
+    disponibilite: "Disponible en magasin",
+    image: "veste-orsa.jpg"
     },
     {
         nom: "Gants de protection",
@@ -249,7 +250,9 @@ function afficherProduits() {
             <div class="product">
 
                 <div class="product-image">
-                    PHOTO PRODUIT
+                    ${produit.image
+        ? `<img src="${produit.image}" alt="${produit.nom}">`
+        : "PHOTO PRODUIT"}
                 </div>
 
                 <div class="product-info">
