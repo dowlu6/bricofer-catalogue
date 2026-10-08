@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1f2937">
+<title>Bricofer Outillage / EPI</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f5f7;
+    color: #1f2937;
+}
+
+header {
+    background: #1f2937;
+    color: white;
+    padding: 24px 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header p {
+    margin: 6px 0 0;
+    color: #d1d5db;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 20px;
+}
+
+.search {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.categories {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.category {
+    border: 1px solid #d1d5db;
+    background: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.category:hover {
+    background: #e5e7eb;
+}
+
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 18px;
+}
+
+.product {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+}
+
+.product-image {
+    height: 180px;
+    background: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+}
+
+.product-info {
+    padding: 15px;
+}
+
+.product-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.reference {
+    color: #6b7280;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.status {
+    display: inline-block;
+    padding: 6px 9px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.available {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.order {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+footer {
+    text-align: center;
+    color: #6b7280;
+    padding: 40px 20px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Bricofer Outillage / EPI</h1>
+    <p>Catalogue commercial</p>
+</header>
+
+<div class="container">
+
+    <input
+        type="text"
+        class="search"
+        id="search"
+        placeholder="Rechercher un produit ou une référence..."
+    >
+
+    <div class="categories">
+        <button class="category" onclick="filterProducts('Tous')">Tous</button>
+        <button class="category" onclick="filterProducts('Outillage')">🔧 Outillage</button>
+        <button class="category" onclick="filterProducts('EPI')">🦺 EPI</button>
+        <button class="category" onclick="filterProducts('Accessoires')">🧰 Accessoires</button>
+    </div>
+
+    <div class="products" id="products"></div>
+
+</div>
+
+<footer>
+    Bricofer Outillage / EPI
+</footer>
+
+<script>
+
+const produits = [
+    {
+        nom: "Perceuse à percussion",
+        reference: "PER-001",
+        categorie: "Outillage",
+        disponibilite: "Disponible en magasin"
+    },
+    {
+        nom: "Meuleuse professionnelle",
+        reference: "MEU-002",
+        categorie: "Outillage",
+        disponibilite: "Sur commande"
+    },
+    {
+        nom: "Casque de protection",
+        reference: "EPI-001",
+        categorie: "EPI",
+        disponibilite: "Disponible en magasin"
+    },
+    {
+        nom: "Gants de protection",
+        reference: "EPI-002",
+        categorie: "EPI",
+        disponibilite: "Disponible en magasin"
+    },
+    {
+        nom: "Lunettes de protection",
+        reference: "EPI-003",
+        categorie: "EPI",
+        disponibilite: "Sur commande"
+    },
+    {
+        nom: "Malette à outils",
+        reference: "ACC-001",
+        categorie: "Accessoires",
+        disponibilite: "Disponible en magasin"
+    }
+];
+
+let categorieActuelle = "Tous";
+
+function afficherProduits() {
+
+    const recherche = document
+        .getElementById("search")
+        .value
+        .toLowerCase();
+
+    const zone = document.getElementById("products");
+
+    const resultats = produits.filter(produit => {
+
+        const correspondCategorie =
+            categorieActuelle === "Tous" ||
+            produit.categorie === categorieActuelle;
+
+        const correspondRecherche =
+            produit.nom.toLowerCase().includes(recherche) ||
+            produit.reference.toLowerCase().includes(recherche);
+
+        return correspondCategorie && correspondRecherche;
+    });
+
+    zone.innerHTML = "";
+
+    resultats.forEach(produit => {
+
+        const classe =
+            produit.disponibilite === "Disponible en magasin"
+            ? "available"
+            : "order";
+
+        zone.innerHTML += `
+            <div class="product">
+
+                <div class="product-image">
+                    PHOTO PRODUIT
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-name">
+                        ${produit.nom}
+                    </div>
+
+                    <div class="reference">
+                        Référence : ${produit.reference}
+                    </div>
+
+                    <span class="status ${classe}">
+                        ${produit.disponibilite}
+                    </span>
+
+                </div>
+
+            </div>
+        `;
+    });
+}
+
+function filterProducts(categorie) {
+    categorieActuelle = categorie;
+    afficherProduits();
+}
+
+document
+    .getElementById("search")
+    .addEventListener("input", afficherProduits);
+
+afficherProduits();
+
+</script>
+
+</body>
+</html>
