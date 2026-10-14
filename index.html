@@ -386,11 +386,21 @@ const produits = [
     image: "parka matelassee t6 lma.png"
 },
    {
-        nom: "Malette à outils",
-        reference: "ACC-001",
-        categorie: "Accessoires",
-        disponibilite: "Disponible en magasin"
-    }
+nom: "Malette à outils",
+reference: "ACC-001",
+categorie: "Accessoires",
+disponibilite: "Disponible en magasin"
+},
+{
+nom: "Offre Klingspor - Toolbox + carte carburant",
+reference: "PROMO-KLINGSPOR",
+marque: "KLINGSPOR",
+categorie: "Promo",
+disponibilite: "Offre promotionnelle",
+image: "toolbox.png",
+images: ["toolbox.png", "disques.png", "toolbox2.png"],
+description: "Pour l’achat de 3 boîtes de 25 disques, recevez une toolbox et 20 € en carte carburant offerts."
+}
 ];
 
 let categorieActuelle = "Tous";
@@ -466,33 +476,48 @@ document
     .addEventListener("input", afficherProduits);
 
 afficherProduits();
-    function ouvrirFicheProduit(reference) {
-    const produit = produits.find(p => p.reference === reference);
-
     if (!produit) return;
 
-    document.getElementById("products").innerHTML = `
-        <button onclick="afficherProduits()" style="margin-bottom:14px; padding:7px 11px; border:0; border-radius:6px; background:#1f2937; color:white; font-size:13px; cursor:pointer;">
-            ← Retour au catalogue
-        </button>
+const images = produit.images || (produit.image ? [produit.image] : []);
+let imageActuelle = 0;
 
-        <div class="product" style="display:block; padding:20px;">
-            ${produit.image
-                ? `<img src="${produit.image}" alt="${produit.nom}" style="width:100%; max-height:350px; object-fit:contain;">`
-                : ""}
+document.getElementById("products").innerHTML = `
+    <button onclick="afficherProduits()" style="margin-bottom:14px; padding:7px 11px; border:0; border-radius:6px; background:#1f2937; color:white; font-size:13px; cursor:pointer;">
+        ← Retour au catalogue
+    </button>
 
-            <h2>${produit.nom}</h2>
-
-            <p><strong>Référence :</strong> ${produit.reference}</p>
-            <p><strong>Marque :</strong> ${produit.marque || "Non renseignée"}</p>
-            <p><strong>Catégorie :</strong> ${produit.categorie}</p>
-            <p><strong>Disponibilité :</strong> ${produit.disponibilite}</p>
-
-            <h3>Description du produit</h3>
-            <p>${produit.description || "Description à compléter."}</p>
+    <div class="product" style="display:block; padding:20px;">
+        <div style="text-align:center;">
+            ${images.length ? `
+                <img id="imageCarrousel" src="${images[0]}" alt="${produit.nom}" style="width:100%; max-height:350px; object-fit:contain;">
+                ${images.length > 1 ? `
+                    <div style="display:flex; justify-content:center; align-items:center; gap:18px; margin:12px 0;">
+                        <button onclick="changerImage(-1)" style="padding:8px 14px; cursor:pointer;">❮ Précédent</button>
+                        <span id="numeroImage">1 / ${images.length}</span>
+                        <button onclick="changerImage(1)" style="padding:8px 14px; cursor:pointer;">Suivant ❯</button>
+                    </div>
+                ` : ""}
+            ` : ""}
         </div>
-    `;
-}
+
+        <h2>${produit.nom}</h2>
+        <p><strong>Référence :</strong> ${produit.reference}</p>
+        <p><strong>Marque :</strong> ${produit.marque || "Non renseignée"}</p>
+        <p><strong>Catégorie :</strong> ${produit.categorie}</p>
+        <p><strong>Disponibilité :</strong> ${produit.disponibilite}</p>
+
+        <h3>Description du produit</h3>
+        <p>${produit.description || "Description à compléter."}</p>
+    </div>
+`;
+
+window.changerImage = function(sens) {
+    imageActuelle = (imageActuelle + sens + images.length) % images.length;
+
+    document.getElementById("imageCarrousel").src = images[imageActuelle];
+    document.getElementById("numeroImage").textContent =
+        (imageActuelle + 1) + " / " + images.length;
+};
     afficherProduits();
 
 </script>
