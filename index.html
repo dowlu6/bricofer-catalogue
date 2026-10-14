@@ -199,6 +199,7 @@ const produits = [
     categorie: "EPI",
     disponibilite: "Disponible en magasin",
     image: "veste-orsa.png.png"
+        description: "Veste professionnelle bicolore marine et orange. Pour compléter la fiche, ajoute les caractéristiques exactes du fabricant."
     },
         {
        nom: "Doudoune légère Noir",
@@ -426,7 +427,7 @@ function afficherProduits() {
             : "order";
 
         zone.innerHTML += `
-            <div class="product">
+            <div class="product" onclick="ouvrirFicheProduit('${produit.reference}')" style="cursor:pointer;">
 
                 <div class="product-image">
                     ${produit.image
@@ -466,6 +467,37 @@ document
     .addEventListener("input", afficherProduits);
 
 afficherProduits();
+    function ouvrirFicheProduit(reference) {
+    const produit = produits.find(p => p.reference === reference);
+
+    if (!produit) return;
+
+    document.getElementById("products").innerHTML = `
+        <button onclick="afficherProduits()" style="margin-bottom:20px; padding:12px 18px; border:0; border-radius:8px; background:#1f2937; color:white; font-size:16px;">
+            ← Retour au catalogue
+        </button>
+
+        <div class="product" style="display:block; padding:20px;">
+            ${produit.image
+                ? `<img src="${produit.image}" alt="${produit.nom}" style="width:100%; max-height:350px; object-fit:contain;">`
+                : ""}
+
+            <h2>${produit.nom}</h2>
+
+            <p><strong>Référence :</strong> ${produit.reference}</p>
+            <p><strong>Marque :</strong> ${produit.marque || "Non renseignée"}</p>
+            <p><strong>Catégorie :</strong> ${produit.categorie}</p>
+            <p><strong>Disponibilité :</strong> ${produit.disponibilite}</p>
+
+            <h3>Description du produit</h3>
+            <p>${produit.description || "Description à compléter."}</p>
+        </div>
+    `;
+}
+
+
+
+Cette fonction prépare la fiche, mais le clic sur les articles ne l’ouvrira pas encore.
 
 </script>
 
