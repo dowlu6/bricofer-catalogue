@@ -138,6 +138,45 @@ footer {
     color: #6b7280;
     padding: 40px 20px;
 }
+#accueil-categories {
+    margin: 24px 0;
+    text-align: center;
+}
+
+#accueil-categories h2 {
+    margin-bottom: 18px;
+    color: #1f2937;
+}
+
+.categories-accueil {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.categories-accueil button {
+    min-height: 115px;
+    padding: 18px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 14px;
+    background: white;
+    color: #1f2937;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.categories-accueil button:active {
+    transform: scale(0.98);
+}
+
+@media (max-width: 420px) {
+    .categories-accueil button {
+        min-height: 100px;
+        font-size: 17px;
+    }
+}
 </style>
 </head>
 
@@ -168,7 +207,17 @@ footer {
         <button class="category" onclick="filterProducts('EPI')">🦺 EPI</button>
         <button class="category" onclick="filterProducts('Chaussures')">👟 Chaussures</button>
     </div>
-
+<div id="accueil-categories">
+    <h2>Que recherchez-vous ?</h2>
+    <div class="categories-accueil">
+      
+       <button onclick="filterProducts('Promo')">🔥 Promo - Offres du moment</button>
+        <button onclick="filterProducts('Outillage')">🔧 Outillage</button>
+          <button onclick="filterProducts('Accessoires')">🧰 Consommables</button>
+        <button onclick="filterProducts('EPI')">🦺 EPI</button>
+        <button onclick="filterProducts('Chaussures')">👟 Chaussures</button>
+    </div>
+</div>
     <div class="products" id="products"></div>
 
 </div>
@@ -440,7 +489,9 @@ function afficherProduits() {
         return correspondCategorie && correspondRecherche;
     });
 
-    zone.innerHTML = "";
+    zone.innerHTML =     <button onclick="retourAccueil()" style="margin-bottom:16px; padding:12px 18px; border:0; border-radius:8px; background:#1f2937; color:white; font-size:16px; cursor:pointer;">
+        ← Accueil
+    </button>;
 
     resultats.forEach(produit => {
 
@@ -456,6 +507,12 @@ function afficherProduits() {
                     ${produit.image
         ? `<img src="${produit.image}" alt="${produit.nom}">`
         : "PHOTO PRODUIT"}
+        function retourAccueil() {
+document.getElementById("products").style.display = "none";
+document.getElementById("accueil-categories").style.display = "block";
+document.getElementById("search").value = "";
+categorieActuelle = "Tous";
+}
                 </div>
 
                 <div class="product-info">
@@ -480,9 +537,14 @@ function afficherProduits() {
     });
 }
 
+
 function filterProducts(categorie) {
     categorieActuelle = categorie;
-    afficherProduits();
+document.getElementById("accueil-categories").style.display = "none";
+document.getElementById("products").style.display = "block";
+
+afficherProduits();
+
 }
 
 document
