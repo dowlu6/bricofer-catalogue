@@ -538,9 +538,19 @@ afficherProduits();
 
 }
 
-document
-    .getElementById("search")
-    .addEventListener("input", afficherProduits);
+   document
+.getElementById("search")
+.addEventListener("input", function () {
+const recherche = this.value.trim();
+
+    if (recherche !== "") {
+        categorieActuelle = "Tous";
+        document.getElementById("accueil-categories").style.display = "none";
+        document.getElementById("products").style.display = "block";
+    }
+
+    afficherProduits();
+});
 
 afficherProduits();
     function ouvrirFicheProduit(reference) {
