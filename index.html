@@ -459,137 +459,117 @@ const produits = [
 let categorieActuelle = "Tous";
 
 function afficherProduits() {
+const recherche = document.getElementById("search").value.toLowerCase();
+const zone = document.getElementById("products");
 
-    const recherche = document
-        .getElementById("search")
-        .value
-        .toLowerCase();
+const resultats = produits.filter(produit => {
+    const correspondCategorie =
+        categorieActuelle === "Tous" ||
+        produit.categorie === categorieActuelle;
 
-    const zone = document.getElementById("products");
+    const correspondRecherche =
+        produit.nom.toLowerCase().includes(recherche) ||
+        produit.reference.toLowerCase().includes(recherche);
 
-    const resultats = produits.filter(produit => {
+    return correspondCategorie && correspondRecherche;
+});
 
-        const correspondCategorie =
-            categorieActuelle === "Tous" ||
-            produit.categorie === categorieActuelle;
-
-        const correspondRecherche =
-            produit.nom.toLowerCase().includes(recherche) ||
-            produit.reference.toLowerCase().includes(recherche);
-
-        return correspondCategorie && correspondRecherche;
-    });
-
-    zone.innerHTML =     <button onclick="retourAccueil()" style="margin-bottom:16px; padding:12px 18px; border:0; border-radius:8px; background:#1f2937; color:white; font-size:16px; cursor:pointer;">
+zone.innerHTML = `
+    <button onclick="retourAccueil()" style="margin-bottom:16px; padding:12px 18px; border:0; border-radius:8px; background:#1f2937; color:white; font-size:16px; cursor:pointer;">
         ← Accueil
-    </button>;
+    </button>
+`;
 
-    resultats.forEach(produit => {
+if (resultats.length === 0) {
+    zone.innerHTML += "<p>Aucun produit trouvé.</p>";
+    return;
+}
 
-        const classe =
-            produit.disponibilite === "Disponible en magasin"
+resultats.forEach(produit => {
+    const classe =
+        produit.disponibilite === "Disponible en magasin"
             ? "available"
             : "order";
 
-        zone.innerHTML += `
-            <div class="product" onclick="ouvrirFicheProduit('${produit.reference}')" style="cursor:pointer;">
+    zone.innerHTML += `
+        <div class="product" onclick="ouvrirFicheProduit('${produit.reference}')" style="cursor:pointer;">
+            <div class="product-image">
+                ${produit.image
+                    ? `<img src="${produit.image}" alt="${produit.nom}">`
+                    : "PHOTO PRODUIT"}
+            </div>
+            <div class="product-info">
+                <div class="product-name">${produit.nom}</div>
+                <div class="reference">
+                    Référence : ${produit.reference}<br>
+                    Marque : ${produit.marque || "Non renseignée"}
+                </div>
+                <span class="status ${classe}">
+                    ${produit.disponibilite}
+                </span>
+            </div>
+        </div>
+    `;
+});
 
-                <div class="product-image">
-                    ${produit.image
-        ? `<img src="${produit.image}" alt="${produit.nom}">`
-        : "PHOTO PRODUIT"}
-        function retourAccueil() {
+}
+
+function filterProducts(categorie) {
+categorieActuelle = categorie;
+document.getElementById("accueil-categories").style.display = "none";
+document.getElementById("products").style.display = "block";
+afficherProduits();
+}
+
+function retourAccueil() {
 document.getElementById("products").style.display = "none";
 document.getElementById("accueil-categories").style.display = "block";
 document.getElementById("search").value = "";
 categorieActuelle = "Tous";
 }
-                </div>
 
-                <div class="product-info">
-
-                    <div class="product-name">
-                        ${produit.nom}
-                    </div>
-
-                    <div class="reference">
-                         Référence : ${produit.reference}<br>
-    Marque : ${produit.marque || "Non renseignée"}
-                    </div>
-
-                    <span class="status ${classe}">
-                        ${produit.disponibilite}
-                    </span>
-
-                </div>
-
-            </div>
-        `;
-    });
-}
-
-
-function filterProducts(categorie) {
-    categorieActuelle = categorie;
+document.getElementById("search").addEventListener("input", function () {
+if (this.value.trim() !== "") {
+categorieActuelle = "Tous";
 document.getElementById("accueil-categories").style.display = "none";
 document.getElementById("products").style.display = "block";
-
-afficherProduits();
-
 }
-
-   document
-.getElementById("search")
-.addEventListener("input", function () {
-const recherche = this.value.trim();
-
-    if (recherche !== "") {
-        categorieActuelle = "Tous";
-        document.getElementById("accueil-categories").style.display = "none";
-        document.getElementById("products").style.display = "block";
-    }
-
-    afficherProduits();
+afficherProduits();
 });
 
-afficherProduits();
-    function ouvrirFicheProduit(reference) {
-    const produit = produits.find(p => p.reference === reference);
+function ouvrirFicheProduit(reference) {
+const produit = produits.find(p => p.reference === reference);
+if (!produit) return;
 
-    if (!produit) return;
+document.getElementById("products").innerHTML = `
+    <button onclick="afficherProduits()" style="margin-bottom:14px; padding:7px 11px; border:0; border-radius:6px; background:#1f2937; color:white; font-size:13px; cursor:pointer;">
+        ← Retour au catalogue
+    </button>
+    <div class="product" style="display:block; padding:20px;">
+        ${produit.image
+            ? `<img src="${produit.image}" alt="${produit.nom}" style="width:100%; max-height:350px; object-fit:contain;">`
+            : ""}
+        <h2>${produit.nom}</h2>
+        <p><strong>Référence :</strong> ${produit.reference}</p>
+        <p><strong>Marque :</strong> ${produit.marque || "Non renseignée"}</p>
+        <p><strong>Catégorie :</strong> ${produit.categorie}</p>
+        <p><strong>Disponibilité :</strong> ${produit.disponibilite}</p>
+        <h3>Description du produit</h3>
+        <p>${produit.description || "Description à compléter."}</p>
+    </div>
+`;
 
-    document.getElementById("products").innerHTML = `
-        <button onclick="afficherProduits()" style="margin-bottom:14px; padding:7px 11px; border:0; border-radius:6px; background:#1f2937; color:white; font-size:13px; cursor:pointer;">
-            ← Retour au catalogue
-        </button>
-
-        <div class="product" style="display:block; padding:20px;">
-            ${produit.image
-                ? `<img src="${produit.image}" alt="${produit.nom}" style="width:100%; max-height:350px; object-fit:contain;">`
-                : ""}
-
-            <h2>${produit.nom}</h2>
-
-            <p><strong>Référence :</strong> ${produit.reference}</p>
-            <p><strong>Marque :</strong> ${produit.marque || "Non renseignée"}</p>
-            <p><strong>Catégorie :</strong> ${produit.categorie}</p>
-            <p><strong>Disponibilité :</strong> ${produit.disponibilite}</p>
-
-            <h3>Description du produit</h3>
-            <p>${produit.description || "Description à compléter."}</p>
-        </div>
-    `;
 }
-    afficherProduits();
 
-</script>
-
-</body>
-    <script>
-        if("serviceWorker"in navigator){
-            window.addEventListener("load",()=>{
+document.getElementById("products").style.display = "none";
+document.getElementById("accueil-categories").style.display = "block";
+    </script>
+       <script>
+        if ("serviceWorker" in navigator) {
+            window.addEventListener("load", () => {
                 navigator.serviceWorker.register("./sw.js");
             });
         }
     </script>
+    </body>
 </html>
