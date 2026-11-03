@@ -890,60 +890,78 @@ const produits = [
 let categorieActuelle = "Tous";
 
 function afficherProduits() {
-const recherche = document.getElementById("search").value.toLowerCase();
-const zone = document.getElementById("products");
+    const recherche = document.getElementById("search").value.toLowerCase();
+    const zone = document.getElementById("products");
 
-const resultats = produits.filter(produit => {
-    const correspondCategorie =
-        categorieActuelle === "Tous" ||
-        produit.categorie === categorieActuelle;
+    const resultats = produits.filter(produit => {
+        const correspondCategorie =
+            categorieActuelle === "Tous" ||
+            produit.categorie === categorieActuelle;
 
-    const correspondRecherche =
-        produit.nom.toLowerCase().includes(recherche) ||
-        produit.reference.toLowerCase().includes(recherche);
+        const correspondRecherche =
+            produit.nom.toLowerCase().includes(recherche) ||
+            produit.reference.toLowerCase().includes(recherche);
 
-    return correspondCategorie && correspondRecherche;
-});
+        return correspondCategorie && correspondRecherche;
+    });
 
-zone.innerHTML = `
-    <button onclick="retourAccueil()" style="margin-bottom:16px; padding:12px 18px; border:0; border-radius:8px; background:#1f2937; color:white; font-size:16px; cursor:pointer;">
-        ← Accueil
-    </button>
-`;
-
-if (resultats.length === 0) {
-    zone.innerHTML += "<p>Aucun produit trouvé.</p>";
-    return;
-}
-
-resultats.forEach(produit => {
-    const classe =
-        produit.disponibilite === "Disponible en magasin"
-            ? "available"
-            : "order";
-
-    zone.innerHTML += `
-        <div class="product" onclick="ouvrirFicheProduit('${produit.reference}')" style="cursor:pointer;">
-            <div class="product-image">
-                ${produit.image
-                    ? `<img src="${produit.image}" alt="${produit.nom}">`
-                    : "PHOTO PRODUIT"}
-            </div>
-            <div class="product-info">
-                <div class="product-name">${produit.nom}</div>
-                <div class="reference">
-                    Référence : ${produit.reference}<br>
-                    Marque : ${produit.marque || "Non renseignée"}
-                </div>
-                <span class="status ${classe}">
-                    ${produit.disponibilite}
-                </span>
-            </div>
-        </div>
+    zone.innerHTML = `
+        <button onclick="retourAccueil()" style="margin-bottom:16px; padding:12px 18px; border:0; border-radius:8px; background:#1f2937; color:white; font-size:16px; cursor:pointer;">
+            ← Accueil
+        </button>
     `;
-});
 
+    if (resultats.length === 0) {
+        zone.innerHTML += "<p>Aucun produit trouvé.</p>";
+        return;
+    }
+
+    resultats.forEach(produit => {
+        const classe =
+            produit.disponibilite === "Disponible en magasin"
+                ? "available"
+                : "order";
+
+        const prixDestockage =
+            produit.categorie === "Destockage" && produit.nouveauPrix
+                ? `
+                    <div style="margin-top:10px;">
+                        <div style="color:#777; text-decoration:line-through; font-size:15px;">
+                            ${produit.ancienPrix || ""}
+                        </div>
+                        <div style="color:#dc2626; font-size:23px; font-weight:bold;">
+                            ${produit.nouveauPrix}
+                        </div>
+                    </div>
+                `
+                : "";
+
+        zone.innerHTML += `
+            <div class="product" onclick="ouvrirFicheProduit('${produit.reference}')" style="cursor:pointer;">
+                <div class="product-image">
+                    ${produit.image
+                        ? `<img src="${produit.image}" alt="${produit.nom}">`
+                        : "PHOTO PRODUIT"}
+                </div>
+                <div class="product-info">
+                    <div class="product-name">${produit.nom}</div>
+                    <div class="reference">
+                        Référence : ${produit.reference}<br>
+                        Marque : ${produit.marque || "Non renseignée"}
+                    </div>
+                    ${prixDestockage}
+                    <span class="status ${classe}">
+                        ${produit.disponibilite}
+                    </span>
+                </div>
+            </div>
+        `;
+    });
 }
+
+
+
+Étape 2 — Enregistrer
 
 function filterProducts(categorie) {
 categorieActuelle = categorie;
