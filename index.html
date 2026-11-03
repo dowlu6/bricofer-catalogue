@@ -998,22 +998,34 @@ afficherProduits();
 });
 
 function ouvrirFicheProduit(reference) {
-const produit = produits.find(p => p.reference === reference);
-if (!produit) return;
+    const produit = produits.find(p => p.reference === reference);
+    if (!produit) return;
 
-document.getElementById("products").innerHTML = `
-    <button onclick="afficherProduits()" style="margin-bottom:14px; padding:7px 11px; border:0; border-radius:6px; background:#1f2937; color:white; font-size:13px; cursor:pointer;">
-        ← Retour au catalogue
-    </button>
-    <div class="product" style="display:block; padding:20px;">
-        ${produit.image
-            ? `<img src="${produit.image}" alt="${produit.nom}" style="width:100%; max-height:350px; object-fit:contain;">`
-            : ""}
-                        ${produit.prixHT ? `
+    document.getElementById("products").innerHTML = `
+        <button onclick="afficherProduits()" style="margin-bottom:14px; padding:7px 11px; border:0; border-radius:6px; background:#1f2937; color:white; font-size:13px; cursor:pointer;">
+            ← Retour au catalogue
+        </button>
+
+        <div class="product" style="display:block; padding:20px;">
+            ${produit.image
+                ? `<img src="${produit.image}" alt="${produit.nom}" style="width:100%; max-height:350px; object-fit:contain;">`
+                : ""}
+
+            ${produit.categorie === "Destockage" && produit.nouveauPrix ? `
                 <div style="background:#fff1f1; border:2px solid #dc2626; border-radius:12px; padding:18px; margin:18px 0; text-align:center;">
-                    <p style="font-size:18px; margin:5px;">
-                        Prix HT
+                    <p style="color:#777; text-decoration:line-through; font-size:18px;">
+                        Ancien prix : ${produit.ancienPrix}
                     </p>
+                    <p style="font-size:16px; margin:5px;">NOUVEAU PRIX HT</p>
+                    <p style="font-size:32px; font-weight:bold; color:#dc2626; margin:5px;">
+                        ${produit.nouveauPrix}
+                    </p>
+                </div>
+            ` : ""}
+
+            ${produit.prixHT ? `
+                <div style="background:#fff1f1; border:2px solid #dc2626; border-radius:12px; padding:18px; margin:18px 0; text-align:center;">
+                    <p style="font-size:18px; margin:5px;">Prix HT</p>
                     <p style="font-size:30px; font-weight:bold; color:#dc2626; margin:5px;">
                         ${produit.prixHT}
                     </p>
@@ -1025,16 +1037,16 @@ document.getElementById("products").innerHTML = `
                     </p>
                 </div>
             ` : ""}
-        <h2>${produit.nom}</h2>
-        <p><strong>Référence :</strong> ${produit.reference}</p>
-        <p><strong>Marque :</strong> ${produit.marque || "Non renseignée"}</p>
-        <p><strong>Catégorie :</strong> ${produit.categorie}</p>
-        <p><strong>Disponibilité :</strong> ${produit.disponibilite}</p>
-        <h3>Description du produit</h3>
-        <p>${produit.description || "Description à compléter."}</p>
-    </div>
-`;
 
+            <h2>${produit.nom}</h2>
+            <p><strong>Référence :</strong> ${produit.reference}</p>
+            <p><strong>Marque :</strong> ${produit.marque || "Non renseignée"}</p>
+            <p><strong>Catégorie :</strong> ${produit.categorie}</p>
+            <p><strong>Disponibilité :</strong> ${produit.disponibilite}</p>
+            <h3>Description du produit</h3>
+            <p>${produit.description || "Description à compléter."}</p>
+        </div>
+    `;
 }
 
 document.getElementById("products").style.display = "none";
