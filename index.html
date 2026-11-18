@@ -1122,26 +1122,6 @@ function afficherMarque(marque, largeur = 100) {
 }
 
 let categorieActuelle = "Tous";
-if (!lignesPrix && produit.prixCatalogue) {
-        lignesPrix += `
-            <p style="margin:5px;">
-                <strong>${produit.prixCatalogue}</strong>
-            </p>`;
-    }
-
-    if (!lignesPrix) return "";
-
-    return `
-        <div style="background:#fff1f1; border:1px solid #dc2626; border-radius:10px; padding:12px; margin:12px 0; text-align:center; color:#dc2626;">
-            ${lignesPrix}
-            ${produit.mentionPrix ? `
-                <p style="font-size:11px; color:#777; margin:5px;">
-                    (${produit.mentionPrix})
-                </p>
-            ` : ""}
-        </div>
-    `;
-}
 function afficherPrixPersonnalise(produit, emplacement) {
 
     if (produit.categorie === "Destockage") return "";
