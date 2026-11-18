@@ -1122,7 +1122,26 @@ function afficherMarque(marque, largeur = 100) {
 }
 
 let categorieActuelle = "Tous";
+if (!lignesPrix && produit.prixCatalogue) {
+        lignesPrix += `
+            <p style="margin:5px;">
+                <strong>${produit.prixCatalogue}</strong>
+            </p>`;
+    }
 
+    if (!lignesPrix) return "";
+
+    return `
+        <div style="background:#fff1f1; border:1px solid #dc2626; border-radius:10px; padding:12px; margin:12px 0; text-align:center; color:#dc2626;">
+            ${lignesPrix}
+            ${produit.mentionPrix ? `
+                <p style="font-size:11px; color:#777; margin:5px;">
+                    (${produit.mentionPrix})
+                </p>
+            ` : ""}
+        </div>
+    `;
+}
 function afficherProduits() {
     const recherche = document.getElementById("search").value.toLowerCase();
     const zone = document.getElementById("products");
@@ -1209,9 +1228,8 @@ function afficherProduits() {
     Référence : ${produit.reference}<br>
  ${afficherMarque(produit.marque, 100)}
 </div>
-                    ${prixDestockage}
-                    ${prixConsommables}
-                    ${prixOutillage}
+${prixDestockage}
+${afficherPrixPersonnalise(produit, "vignette")}
                     <span class="status ${classe}">
                         ${produit.disponibilite}
                     </span>
@@ -1269,41 +1287,7 @@ function ouvrirFicheProduit(reference) {
                     </p>
                 </div>
             ` : ""}
-
-            ${produit.prixHT ? `
-                <div style="background:#fff1f1; border:2px solid #dc2626; border-radius:12px; padding:18px; margin:18px 0; text-align:center;">
-                    <p style="font-size:18px; margin:5px;">Prix HT</p>
-                    <p style="font-size:30px; font-weight:bold; color:#dc2626; margin:5px;">
-                        ${produit.prixHT}
-                    </p>
-                    <p style="font-size:22px; font-weight:bold; margin:8px 0;">
-                        ${produit.prixTTC} TTC
-                    </p>
-                    <p style="font-size:13px; color:#555;">
-                        Vente DEEE : ${produit.deee}
-                    </p>
-                </div>
-            ` : ""}
-${produit.categorie === "Consommables" && produit.prixCatalogue ? `
-    <div style="background:#fff1f1; border:2px solid #dc2626; border-radius:12px; padding:18px; margin:18px 0; text-align:center;">
-        <p style="font-size:30px; font-weight:bold; color:#dc2626; margin:5px;">
-            ${produit.prixCatalogue}
-        </p>
-        <p style="font-size:13px; color:#777;">
-            ${produit.mentionPrix ? `(${produit.mentionPrix})` : ""}
-        </p>
-    </div>
-` : ""}
-${produit.categorie === "Outillage" && produit.prixCatalogue ? `
-    <div style="background:#fff1f1; border:2px solid #dc2626; border-radius:12px; padding:18px; margin:18px 0; text-align:center;">
-        <p style="font-size:30px; font-weight:bold; color:#dc2626; margin:5px;">
-            ${produit.prixCatalogue}
-        </p>
-        <p style="font-size:13px; color:#777;">
-            ${produit.mentionPrix ? `(${produit.mentionPrix})` : ""}
-        </p>
-    </div>
-` : ""}
+${afficherPrixPersonnalise(produit, "fiche")}
             <h2>${produit.nom}</h2>
             <p><strong>Référence :</strong> ${produit.reference}</p>
  <p>${afficherMarque(produit.marque, 120)}</p>
