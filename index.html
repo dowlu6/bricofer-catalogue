@@ -1181,6 +1181,19 @@ function afficherProduits() {
             </div>
         `
         : "";
+        const prixOutillage =
+    produit.categorie === "Outillage" && produit.prixCatalogue
+        ? `
+            <div style="margin-top:10px;">
+                <div style="color:#dc2626; font-size:21px; font-weight:bold;">
+                    ${produit.prixCatalogue}
+                </div>
+                <div style="color:#777; font-size:11px;">
+                    ${produit.mentionPrix ? `(${produit.mentionPrix})` : ""}
+                </div>
+            </div>
+        `
+        : "";
 
         zone.innerHTML += `
             <div class="product" onclick="ouvrirFicheProduit('${produit.reference}')" style="cursor:pointer;">
@@ -1197,6 +1210,7 @@ function afficherProduits() {
 </div>
                     ${prixDestockage}
                     ${prixConsommables}
+                    ${prixOutillage}
                     <span class="status ${classe}">
                         ${produit.disponibilite}
                     </span>
