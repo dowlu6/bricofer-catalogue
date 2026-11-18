@@ -1293,6 +1293,16 @@ ${produit.categorie === "Consommables" && produit.prixCatalogue ? `
         </p>
     </div>
 ` : ""}
+${produit.categorie === "Outillage" && produit.prixCatalogue ? `
+    <div style="background:#fff1f1; border:2px solid #dc2626; border-radius:12px; padding:18px; margin:18px 0; text-align:center;">
+        <p style="font-size:30px; font-weight:bold; color:#dc2626; margin:5px;">
+            ${produit.prixCatalogue}
+        </p>
+        <p style="font-size:13px; color:#777;">
+            ${produit.mentionPrix ? `(${produit.mentionPrix})` : ""}
+        </p>
+    </div>
+` : ""}
             <h2>${produit.nom}</h2>
             <p><strong>Référence :</strong> ${produit.reference}</p>
  <p>${afficherMarque(produit.marque, 120)}</p>
