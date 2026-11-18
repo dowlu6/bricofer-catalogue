@@ -283,6 +283,7 @@ const produits = [
     marque: "MILWAUKEE",
     categorie: "Consommables",
     disponibilite: "Disponible en magasin",
+    prixCatalogue: "12,50 € HT",
     image: "protection auditive bluetooth.png",
         description: "Le mode Chantier permet de contrôler le son de son environnement, réduisant l’intensité des bruits extérieurs (82dB max). Le Bluetooth® numérique 5.1 connecte les appareils et permet de communiquer en toute sécurité sur son environnement de travail. Compatible avec le port des EPI. Jusqu’à 10 heures d’autonomie avec une seule charge."
     },
@@ -1166,6 +1167,19 @@ function afficherProduits() {
                     </div>
                 `
                 : "";
+        const prixConsommables =
+    produit.categorie === "Consommables" && produit.prixCatalogue
+        ? `
+            <div style="margin-top:10px;">
+                <div style="color:#dc2626; font-size:21px; font-weight:bold;">
+                    ${produit.prixCatalogue}
+                </div>
+                <div style="color:#777; font-size:11px;">
+                    (Prix catalogue fournisseur – à adapter par le commercial)
+                </div>
+            </div>
+        `
+        : "";
 
         zone.innerHTML += `
             <div class="product" onclick="ouvrirFicheProduit('${produit.reference}')" style="cursor:pointer;">
@@ -1181,6 +1195,7 @@ function afficherProduits() {
  ${afficherMarque(produit.marque, 100)}
 </div>
                     ${prixDestockage}
+                    ${prixConsommables}
                     <span class="status ${classe}">
                         ${produit.disponibilite}
                     </span>
