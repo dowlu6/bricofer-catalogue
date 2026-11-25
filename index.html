@@ -1296,9 +1296,12 @@ function afficherPrixPersonnalise(produit, emplacement) {
 
     let lignesPrix = "";
 
-    if (produit.prixHT) {
-        lignesPrix += `<p>Prix HT : <strong>${produit.prixHT}</strong></p>`;
-    }
+   if (produit.categorie === "Promo" && produit.ancienPrix) {
+    lignesPrix += `<p style="text-decoration:line-through; color:#888;">Ancien prix HT : ${produit.ancienPrix}</p>`;
+    lignesPrix += `<p style="color:#dc2626; font-size:18px;">Nouveau prix HT : <strong>${produit.prixHT}</strong></p>`;
+} else if (produit.prixHT) {
+    lignesPrix += `<p>Prix HT : <strong>${produit.prixHT}</strong></p>`;
+}
 
     if (produit.prixTTC) {
         lignesPrix += `<p>Prix TTC : <strong>${produit.prixTTC}</strong></p>`;
