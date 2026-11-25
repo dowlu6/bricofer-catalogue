@@ -274,7 +274,7 @@ const produits = [
     categorie: "Promo",
     disponibilite: "Disponible en magasin",
     image: "Poste ARC 160A GYSMI 160P + Masque Opto.png",
-    ancienprix: "218,55 € HT",
+    ancienPrix: "218,55 € HT",
     nouveauPrix: "199,00 € HT",
     deee: "0,6 €HT",
     description: "Ondulateur MIG-MAG portable 230V - 1ph. Affichage LCD. Inversion de la polarité pour fil fourré sans gaz. Bobine de 1kg - 100 mm et 5 kg - 200 mm. Torche avec raccord européen. Position soudage MMA. Fonction MIG-MAG synergique. Fonction TIG “Lift Arc” DC compatible avec torche à valve."
@@ -1301,7 +1301,7 @@ function afficherPrixPersonnalise(produit, emplacement) {
 
    if (produit.categorie === "Promo" && produit.ancienPrix) {
     lignesPrix += `<p style="text-decoration:line-through; color:#888;">Ancien prix HT : ${produit.ancienPrix}</p>`;
-    lignesPrix += `<p style="color:#dc2626; font-size:18px;">Nouveau prix HT : <strong>${produit.prixHT}</strong></p>`;
+    lignesPrix += `<p style="color:#dc2626; font-size:18px;">Nouveau prix HT : <strong>${produit.nouveauPrix}</strong></p>`;
 } else if (produit.prixHT) {
     lignesPrix += `<p>Prix HT : <strong>${produit.prixHT}</strong></p>`;
 }
